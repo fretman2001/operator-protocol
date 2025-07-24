@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d0d0d">
+  <link rel="manifest" href="manifest.json" />
   <title>Operator Protocol - Survival Viper</title>
   <style>
     body {
@@ -11,17 +13,16 @@
       color: #f5f5f5;
       font-family: 'Courier New', Courier, monospace;
       margin: 0;
-      padding: 0;
+      padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
     }
     h1 {
       color: #ffd700;
       text-shadow: 1px 1px 5px #000;
-      margin-bottom: 0.5rem;
     }
     .mission-box {
       background: #1a1a1a;
@@ -55,17 +56,36 @@
 </head>
 <body>
   <h1>🎯 OPERATOR PROTOCOL</h1>
-  <div class="mission-box">
-    <p><strong>Mission of the Day:</strong> Cold shower + 20 pushups + 3-min breathwork + Reflect on this:</p>
-    <p><em>“Comfort is a slow death. Choose discipline.”</em></p>
-    <div class="checklist">
-      <label><input type="checkbox" /> Cold Shower</label>
-      <label><input type="checkbox" /> 20 Pushups</label>
-      <label><input type="checkbox" /> Tactical Breathwork</label>
-      <label><input type="checkbox" /> Read 1 Mindset Page</label>
-      <label><input type="checkbox" /> 3-Minute Reflection</label>
-    </div>
-    <button onclick="alert('Badge Unlocked: Day Complete 💪')">Mark Mission Complete</button>
+  <div class="mission-box" id="mission">
+    <p>Loading mission...</p>
   </div>
+  <button onclick="markComplete()">Mark Mission Complete</button>
+
+  <script>
+    const missions = [
+      "Cold shower + 20 pushups + 3-min breathwork + Reflect: 'Comfort is a slow death.'",
+      "Fast until noon + read 1 mindset page + Shadow boxing 5 min + Reflect: 'Pain is the path.'",
+      "100 pushups throughout day + 10-min walk + Sit in silence + Reflect: 'Stillness is strength.'",
+      "No sugar today + 50 squats + Tactical breathwork + Reflect: 'You are not average.'",
+      "Write 3 priorities + Execute 1 before 9AM + Reflect: 'Discipline decides destiny.'"
+    ];
+    const todayIndex = new Date().getDate() % missions.length;
+    const missionText = missions[todayIndex];
+
+    const missionBox = document.getElementById("mission");
+    const completed = localStorage.getItem("mission-complete");
+
+    if (completed === String(todayIndex)) {
+      missionBox.innerHTML = `<p><strong>Mission:</strong> ${missionText}</p><p>✅ Mission already completed today</p>`;
+    } else {
+      missionBox.innerHTML = `<p><strong>Mission:</strong> ${missionText}</p>`;
+    }
+
+    function markComplete() {
+      localStorage.setItem("mission-complete", todayIndex);
+      alert("Badge Unlocked: Day Complete 💪");
+      location.reload();
+    }
+  </script>
 </body>
 </html>
